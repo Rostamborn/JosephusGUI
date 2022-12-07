@@ -6,21 +6,27 @@ from JosephusGUI.constants import SCREEN_SIZE
 
 
 class Logging(pygame.sprite.Sprite):
-    def __init__(self, num='', status=''):
+    def __init__(self, num1='', num2=''):
         super().__init__()
-        self.num = num
-        self.status = status
+        self.num1 = num1
         self.base_font_smaller = pygame.font.Font(
                 'assets/fonts/JetBrainsMono-ExtraBold.ttf', 20)
         self.image = self.base_font_smaller.render(
-                f"{num} {status}", True, 'Black')
+                f"{num1} {num2}", True, 'Black')
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))
 
-    def update_text(self, num, status):
-        self.num = num
-        self.status = status
+    def update_elimination(self, num1, num2):
+        self.num1 = num1
+        self.num2 = num2
         self.image = self.base_font_smaller.render(
-                f"{num} {status}", True, 'Black')
+                f"{num1} eliminated {num2}", True, 'Black')
+        self.rect = self.image.get_rect(
+                center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))
+
+    def update_revival(self, num1):
+        self.num1 = num1
+        self.image = self.base_font_smaller.render(
+                f"{num1} revived", True, 'Black')
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))

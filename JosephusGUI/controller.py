@@ -100,8 +100,9 @@ class ProgramController():
                         self.current_status[elimination_index] = 0
                         # rendering a text which will tell the user
                         # which element has been eliminated
-                        self.log.sprite.update_text(
-                                str(elimination_index+1), "eliminated")
+                        self.log.sprite.update_elimination(
+                               str(self.current_index+1),
+                               str(elimination_index+1))
                         self.eliminated_nodes.append(elimination_index)
                         self.revert_nodes.append(self.current_index)
                         sprites[elimination_index].kill_node()
@@ -126,8 +127,8 @@ class ProgramController():
         if self.eliminated_nodes != []:
             sprites = self.nodes.sprites()
             index = self.eliminated_nodes.pop()
-            self.log.sprite.update_text(
-                    str(index+1), "revived")
+            self.log.sprite.update_revival(
+                    str(index+1))
             self.current_status[index] = 1
             # we change the pivot to the previous one using a list
             # that kept track of all of the pivots in the entire process
