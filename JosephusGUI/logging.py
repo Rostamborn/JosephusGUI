@@ -16,17 +16,17 @@ class Logging(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))
 
-    def update_elimination(self, num1, num2):
+    def update_elimination(self, num1, num2, status):
         self.num1 = num1
         self.num2 = num2
         self.image = self.base_font_smaller.render(
-                f"{num1} eliminated {num2}", True, 'Black')
+                f"{num1} status {num2}", True, 'Black')
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))
 
-    def update_revival(self, num1):
+    def update_revival(self, num1, status):
         self.num1 = num1
         self.image = self.base_font_smaller.render(
-                f"{num1} revived", True, 'Black')
+                f"{num1} {status}", True, 'Black')
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))

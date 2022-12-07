@@ -65,7 +65,8 @@ class ProgramController():
     # cleans up all the variables used in a single run
     def clean(self):
         self.text_input.sprite.update_text('')
-        self.log.sprite.update_text('', '')
+        self.log.sprite.update_elimination('', '', '')
+        self.log.sprite.update_revival('', '')
         self.nodes.empty()
         self.current_status = [1 for i in range(self.node_number)]
         self.eliminated_nodes = []
@@ -102,7 +103,8 @@ class ProgramController():
                         # which element has been eliminated
                         self.log.sprite.update_elimination(
                                str(self.current_index+1),
-                               str(elimination_index+1))
+                               str(elimination_index+1),
+                               'eliminated')
                         self.eliminated_nodes.append(elimination_index)
                         self.revert_nodes.append(self.current_index)
                         sprites[elimination_index].kill_node()
@@ -128,7 +130,8 @@ class ProgramController():
             sprites = self.nodes.sprites()
             index = self.eliminated_nodes.pop()
             self.log.sprite.update_revival(
-                    str(index+1))
+                    str(index+1),
+                    'revived')
             self.current_status[index] = 1
             # we change the pivot to the previous one using a list
             # that kept track of all of the pivots in the entire process
