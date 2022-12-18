@@ -17,6 +17,7 @@ class Nodes(pygame.sprite.Sprite):
         node_surface_red = pygame.image.load(
                 'assets/red_circle.png').convert_alpha()
         self.node_red = pygame.transform.scale(node_surface_red, circle_size)
+        self.node_red = pygame.transform.scale(node_surface_red, circle_size)
 
         self.image = self.node_green
         self.rect = self.image.get_rect(center=self.pos)
