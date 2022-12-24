@@ -20,7 +20,7 @@ class Logging(pygame.sprite.Sprite):
         self.num1 = num1
         self.num2 = num2
         self.image = self.base_font_smaller.render(
-                f"{num1} status {num2}", True, 'Black')
+                f"{num1} {status} {num2}", True, 'Black')
         self.rect = self.image.get_rect(
                 center=(SCREEN_SIZE[0]//2, SCREEN_SIZE[1]//2))
 
