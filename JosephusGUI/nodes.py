@@ -10,6 +10,7 @@ class Nodes(pygame.sprite.Sprite):
         super().__init__()
 
         self.pos = pos
+
         node_surface_green = pygame.image.load(
                 'assets/green_circle.png').convert_alpha()
         self.node_green = pygame.transform.scale(

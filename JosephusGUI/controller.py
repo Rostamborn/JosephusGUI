@@ -2,8 +2,9 @@
     controls the program flow
 '''
 import pygame
-from JosephusGUI.constants import SCREEN_SIZE, CIRCLE_SIZE
+from JosephusGUI.constants import SCREEN_SIZE, CIRCLE_SIZE, RADIUS
 from JosephusGUI.nodes import Nodes
+from JosephusGUI.numbers import Number
 from JosephusGUI.utils import coordinations, josephus_solver
 from JosephusGUI.logging import Logging
 
@@ -34,6 +35,8 @@ class ProgramController():
                 )
         self.base_font = pygame.font.Font(
                 'assets/fonts/JetBrainsMono-ExtraBold.ttf', 32)
+        self.instruction_font = pygame.font.Font(
+                'assets/fonts/JetBrainsMono-ExtraBold.ttf', 20)
 
         # all of the sprite groups ready to be rendered
         self.text_input = pygame.sprite.GroupSingle()
@@ -41,6 +44,7 @@ class ProgramController():
         self.log = pygame.sprite.GroupSingle()
         self.log.add(Logging())
         self.nodes = pygame.sprite.Group()
+        self.numbers = pygame.sprite.Group()
 
         # we need these to keep the track of changes and chache the process
         self.eliminated_nodes = []
@@ -68,6 +72,7 @@ class ProgramController():
         self.log.sprite.update_elimination('', '', '')
         self.log.sprite.update_revival('', '')
         self.nodes.empty()
+        self.numbers.empty()
         self.current_status = [1 for i in range(self.node_number)]
         self.eliminated_nodes = []
         self.revert_nodes = []
@@ -164,29 +169,47 @@ class ProgramController():
         if keys[pygame.K_RETURN]:
             self.state = 'game'
             self.node_number = self.text_input.sprite.get_number()
-            print(self.node_number)
-            coordinates = coordinations(self.node_number)
+
+            # Making the radius of the main circle dynamic
+            # to fit all the nodes better
+            radius = RADIUS
+            if self.node_number > 30:
+                radius = RADIUS + 80
+            elif self.node_number > 60:
+                radius = RADIUS + 160
+
+            coordinates = coordinations(self.node_number, radius)
             self.current_status = [1 for i in range(self.node_number)]
-            size = CIRCLE_SIZE[0] - (self.node_number - 5)
-            if size <= 15:
-                size = 15
+
+            # making the font size of the numbers on each node dynamic
+            font_size = 32 - (self.node_number - 10)
+            if font_size <= 18:
+                font_size = 18
+
+            # making the node sizes dynamic, so they scale as input increases
+            size = CIRCLE_SIZE[0] - (self.node_number - 2)
+            if size <= 28:
+                size = 28
             for i in range(self.node_number):
                 self.nodes.add(Nodes(coordinates[i], (size, size)))
+                self.numbers.add(Number(coordinates[i], font_size, i+1))
 
     # everything than needs to be rendered in the game surface
     def run_game(self) -> None:
         self.screen.blit(self.game_background, (0, 0))
         self.nodes.draw(self.screen)
         self.nodes.update()
+        self.numbers.draw(self.screen)
+        self.numbers.update()
         self.log.draw(self.screen)
         self.log.update()
-        message1_su = self.base_font.render(
+        message1_su = self.instruction_font.render(
                 "N = Forward", True, 'Black')
         message1_rect = message1_su.get_rect(topleft=(5, 0))
         self.screen.blit(message1_su, message1_rect)
-        message2_su = self.base_font.render(
+        message2_su = self.instruction_font.render(
                 "B = Backward", True, 'Black')
-        message2_rect = message2_su.get_rect(topleft=(5, 30))
+        message2_rect = message2_su.get_rect(topleft=(5, 20))
         self.screen.blit(message2_su, message2_rect)
 
     # everything that needs to be rendered in the gameover surface
